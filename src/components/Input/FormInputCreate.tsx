@@ -8,6 +8,7 @@ interface FormInputProps{
     form: Form;
     formTypesData: FormTypeData[];
     formInputRepository: IFormInputRepository;
+    setForm: (value: React.SetStateAction<Form>) => void
 }
 const initialState:FormInput ={
     formInputId: 0,
@@ -16,7 +17,7 @@ const initialState:FormInput ={
     isActive: true,
     label: ''
 };
-export const FormInputCreate = ({form, formTypesData, formInputRepository}:FormInputProps) => {
+export const FormInputCreate = ({form, setForm, formTypesData, formInputRepository}:FormInputProps) => {
   const [formInput, setFormInput] = useState<FormInput>(initialState);
   useEffect(() => {
     setFormInput(formy => ({
@@ -33,7 +34,6 @@ export const FormInputCreate = ({form, formTypesData, formInputRepository}:FormI
         [event.target.name]: event.target.value
     }));
   };
-
   const handleChangeSwitch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormInput(formy => ({
         ...formy,
@@ -48,12 +48,16 @@ export const FormInputCreate = ({form, formTypesData, formInputRepository}:FormI
   };
   function handlePost(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     formInputRepository.postAsync(formInput).then(res => {
+      formInput.id = Number(res.detail),
       alert(res.message)
+      setForm(formy => ({
+        ...formy,
+        formInputs: [...formy.formInputs, formInput]
+      }))
       setFormInput(initialState);
     })
     .catch(err => alert(err))
   }
-
   return (
     <>
         <h5>Ingresar input</h5>

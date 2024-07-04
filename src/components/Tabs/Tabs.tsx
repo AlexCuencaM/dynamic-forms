@@ -64,7 +64,11 @@ export default function BasicTabs({optionRepository, formRepository, formTypeDat
         {options.map((opt) => (
             <CustomTabPanel key={`comp-${opt.name}-${opt.optionId}`} value={value} index={opt.optionId}>
                 <FormComponent form={form} />
-                <FormInputCreate form={form} formTypesData={formTypeData} formInputRepository={formInputRepository}/>
+                <FormInputCreate 
+                form={form} 
+                setForm={setForm}
+                formTypesData={formTypeData} 
+                formInputRepository={formInputRepository}/>
             </CustomTabPanel>
         ))}
     </Box>

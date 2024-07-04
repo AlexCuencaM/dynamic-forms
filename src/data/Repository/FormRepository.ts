@@ -13,6 +13,7 @@ export const FormRepository: IFormRepository = {
                 optionId: res.optionId,
                 name: res.name,
                 formInputs: res.formInputs.map(inputDTO => ({
+                    
                     isActive: inputDTO.isActive,
                     formInputId: inputDTO.formInputId,
                     label: inputDTO.label,
