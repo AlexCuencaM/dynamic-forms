@@ -6,20 +6,50 @@ import { CustomTabPanel } from './ItemTabs';
 import { IOptionsRepository } from '@/data/Interfaces/IOptionsRepository';
 import { useEffect, useState } from 'react';
 import { Options } from '@/data/Entities/Options';
+import { IFormRepository } from '@/data/Interfaces/IFormRepository';
+import { FormComponent } from '../Form/Form';
+import { Form } from '@/data/Entities/Form';
+import { IFormTypeDataRepository } from '@/data/Interfaces/IFormTypeDataRepository';
+import { FormInputCreate } from '../Input/FormInputCreate';
+import { FormTypeData } from '@/data/Entities/FormTypeData';
+import { IFormInputRepository } from '@/data/Interfaces/IFormInputRepository';
 interface BasicTabsProps{
-    repository: IOptionsRepository;
+    optionRepository: IOptionsRepository;
+    formRepository: IFormRepository;
+    formTypeDataRepository: IFormTypeDataRepository;
+    formInputRepository: IFormInputRepository;
 }
-export default function BasicTabs({repository}: BasicTabsProps) {
+const initialForm = {
+  id:0,
+  optionId:0,
+  name: '',
+  formInputs: []
+} as Form
+export default function BasicTabs({optionRepository, formRepository, formTypeDataRepository, formInputRepository}: BasicTabsProps) {
   const [value, setValue] = React.useState(0);
   const [options, setOptions] = useState<Options[]>([]);
+  const [form, setForm] = useState<Form>(initialForm);
+  const [formTypeData, setFormTypeData] = useState<FormTypeData[]>([]);
   useEffect(() => {
-    repository.getOptions().then((results => {
+    formTypeDataRepository.getAsync().then(results => {
+      setFormTypeData(results);
+    });
+    optionRepository.getOptions()
+    .then((results => {
+        setValue(results[0].optionId);
         setOptions(results);
-    }));
+        return formRepository.getAsync(results[0].optionId);
+    }))
+    .then(form => {
+      setForm(form);
+    });
   }, [])
   
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+    formRepository.getAsync(newValue).then(form => {
+      setValue(newValue);
+      setForm(form);
+    })
   };
 
   return (
@@ -27,13 +57,14 @@ export default function BasicTabs({repository}: BasicTabsProps) {
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           {options.map(opt => (
-            <Tab label={opt.name} />
+            <Tab key={`${opt.name}-${opt.optionId}`} label={opt.name} value={opt.optionId} />
           ))}
         </Tabs>
       </Box>
-        {options.map((opt, index) => (
-            <CustomTabPanel value={value} index={index}>
-                {opt.name}
+        {options.map((opt) => (
+            <CustomTabPanel key={`comp-${opt.name}-${opt.optionId}`} value={value} index={opt.optionId}>
+                <FormComponent form={form} />
+                <FormInputCreate form={form} formTypesData={formTypeData} formInputRepository={formInputRepository}/>
             </CustomTabPanel>
         ))}
     </Box>

@@ -10,5 +10,5 @@ export type FormInputDTO = {
     formInputId: number,
     label: string,
     formtypeDataId?:number,
-    formType: string,
+    formType?: string,
 }
