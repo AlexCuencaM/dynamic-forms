@@ -7,7 +7,7 @@ import { IOptionsRepository } from '@/data/Interfaces/IOptionsRepository';
 import { useEffect, useState } from 'react';
 import { Options } from '@/data/Entities/Options';
 import { IFormRepository } from '@/data/Interfaces/IFormRepository';
-import { FormComponent } from '../Form/Form';
+import { FormComponent } from '../Form/FormComponent';
 import { Form } from '@/data/Entities/Form';
 import { IFormTypeDataRepository } from '@/data/Interfaces/IFormTypeDataRepository';
 import { FormInputCreate } from '../Input/FormInputCreate';
