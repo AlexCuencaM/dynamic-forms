@@ -41,6 +41,7 @@ export default function BasicTabs({optionRepository, formRepository, formTypeDat
         return formRepository.getAsync(results[0].optionId);
     }))
     .then(form => {
+      console.log(form)
       setForm(form);
     });
   }, [])
@@ -63,7 +64,12 @@ export default function BasicTabs({optionRepository, formRepository, formTypeDat
       </Box>
         {options.map((opt) => (
             <CustomTabPanel key={`comp-${opt.name}-${opt.optionId}`} value={value} index={opt.optionId}>
-                <FormComponent form={form} />
+                <FormComponent 
+                  form={form}
+                  setForm={setForm}
+                  formInputRepository={formInputRepository}
+                />
+
                 <FormInputCreate 
                 form={form} 
                 setForm={setForm}

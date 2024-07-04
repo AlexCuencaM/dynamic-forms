@@ -7,7 +7,8 @@ export type FormDTO = {
 
 export type FormInputDTO = {
     isActive: boolean,
-    formInputId: number,
+    formInputId?: number,
+    formId: number,
     label: string,
     formtypeDataId?:number,
     formType?: string,

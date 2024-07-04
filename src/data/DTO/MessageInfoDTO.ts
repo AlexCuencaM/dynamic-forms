@@ -3,3 +3,8 @@ export type MessageInfoDTO = {
     detail?:object,
     success: boolean,
 }
+
+export type PostFormInputDetail = {
+    id: number,
+    formType: string;
+}

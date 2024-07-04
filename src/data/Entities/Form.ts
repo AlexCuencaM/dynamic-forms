@@ -6,9 +6,9 @@ export type Form = {
 }
 
 export type FormInput = {
-    id?:number,
+    id:number,
     isActive: boolean,
-    formInputId: number,
+    formId: number,
     label: string,
     formtypeDataId?:number,
     formType: string,

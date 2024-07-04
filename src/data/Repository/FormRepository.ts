@@ -1,6 +1,6 @@
 import { FormDTO } from "../DTO/FormDTO";
 import { MessageInfoDTO } from "../DTO/MessageInfoDTO";
-import { Form } from "../Entities/Form";
+import { Form, FormInput } from "../Entities/Form";
 import { Get } from "../HttpClient/ClientMethods";
 import { IFormRepository } from "../Interfaces/IFormRepository";
 
@@ -13,26 +13,17 @@ export const FormRepository: IFormRepository = {
                 optionId: res.optionId,
                 name: res.name,
                 formInputs: res.formInputs.map(inputDTO => ({
-                    
+                    formId: res.id,
+                    id: inputDTO.formInputId,
                     isActive: inputDTO.isActive,
-                    formInputId: inputDTO.formInputId,
                     label: inputDTO.label,
                     formtypeDataId: inputDTO.formtypeDataId,
                     formType: inputDTO.formType
-                }))
+                } as FormInput))
             } as Form;
         }
         catch(e){
             throw e;
         }
     },
-    // postAsync: function (form: Form): Promise<MessageInfoDTO> {
-    //     throw new Error("Function not implemented.");
-    // },
-    // putAsync: function (form: Form): Promise<MessageInfoDTO> {
-    //     throw new Error("Function not implemented.");
-    // },
-    // deleteAsync: function (formId: number): Promise<MessageInfoDTO> {
-    //     throw new Error("Function not implemented.");
-    // }
 }

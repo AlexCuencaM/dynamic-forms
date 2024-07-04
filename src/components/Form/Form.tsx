@@ -1,19 +1,15 @@
 import { Form } from '@/data/Entities/Form';
 import { Box, TextField } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers';
+import { DynamicField } from '../Input/DynamicField';
+import { IFormInputRepository } from '@/data/Interfaces/IFormInputRepository';
+import { CrudButtons } from './CrudButtons';
 interface FormProps{
     form: Form;
+    setForm: (value: React.SetStateAction<Form>) => void
+    formInputRepository: IFormInputRepository;
 }
-export const FormComponent = ({form}:FormProps) => {
-    const typeField = (formType: string ) => {
-        if(formType === "Text"){
-            return "text";
-        }
-        if(formType === "Number"){
-            return "number"
-        }
-        return "text";
-    }
+
+export const FormComponent = ({ form, setForm, formInputRepository }:FormProps) => {
   return (
     <Box
       component="form"
@@ -27,10 +23,10 @@ export const FormComponent = ({form}:FormProps) => {
         <TextField label={form.name} value={form.name}/>
         <h4>Ver Preguntas</h4>
         {form.formInputs.map(input => (
-            input.formType === "Date" ? 
-            <DatePicker key={`input-${input.label}`} label={input.label}/>
-            :
-            <TextField key={`input-${input.label}`} label={input.label} type={typeField(input.formType)}/>
+            <div key={`components-${input.label}`}>
+              <DynamicField input={input}/>
+              <CrudButtons inputForm={input} setForm={setForm} formInputRepository={formInputRepository}/>
+            </div>
         ))}
     </Box>
   )

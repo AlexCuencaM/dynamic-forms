@@ -1,3 +1,4 @@
+import { PostFormInputDetail } from '@/data/DTO/MessageInfoDTO';
 import { Form, FormInput } from '@/data/Entities/Form'
 import { FormTypeData } from '@/data/Entities/FormTypeData';
 import { IFormInputRepository } from '@/data/Interfaces/IFormInputRepository';
@@ -11,7 +12,8 @@ interface FormInputProps{
     setForm: (value: React.SetStateAction<Form>) => void
 }
 const initialState:FormInput ={
-    formInputId: 0,
+    id: 0,
+    formId: 0,
     formtypeDataId: 0,
     formType: '',
     isActive: true,
@@ -19,14 +21,14 @@ const initialState:FormInput ={
 };
 export const FormInputCreate = ({form, setForm, formTypesData, formInputRepository}:FormInputProps) => {
   const [formInput, setFormInput] = useState<FormInput>(initialState);
+  const [currentFormTypeData, setCurrentFormTypeData] = React.useState<string>('');
   useEffect(() => {
     setFormInput(formy => ({
       ...formy,
-      formInputId: form.id
+      formId: form.id
     }))
   }, [form.id])
-  const [currentFormTypeData, setCurrentFormTypeData] = React.useState<string>('');
-
+  // console.log(formInput);
   const handleChangeSelect = (event: SelectChangeEvent) => {
     setCurrentFormTypeData(event.target.value as string);
       setFormInput(formy => ({
@@ -48,13 +50,16 @@ export const FormInputCreate = ({form, setForm, formTypesData, formInputReposito
   };
   function handlePost(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     formInputRepository.postAsync(formInput).then(res => {
-      formInput.id = Number(res.detail),
+      const result = res.detail as PostFormInputDetail;
+      formInput.id = Number(result.id);
+      formInput.formType = result.formType;
       alert(res.message)
       setForm(formy => ({
         ...formy,
         formInputs: [...formy.formInputs, formInput]
       }))
-      setFormInput(initialState);
+      setCurrentFormTypeData('');
+      setFormInput({...initialState, formId: formInput.formId});
     })
     .catch(err => alert(err))
   }
