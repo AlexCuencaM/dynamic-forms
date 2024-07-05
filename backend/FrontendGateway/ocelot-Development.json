@@ -1,0 +1,60 @@
+{
+  "Routes": [
+    // Forms
+    {
+      "UpstreamPathTemplate": "/api/form/{everything}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/form/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7208
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/api/FormTypeData/{everything}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/FormTypeData/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7208
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/api/FormInput/{everything}",
+      "UpstreamHttpMethod": [ "Post", "Put", "Delete" ],
+      "DownstreamPathTemplate": "/api/FormInput/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7208
+        }
+      ]
+    },
+
+    //Options
+    {
+      "DownstreamPathTemplate": "/api/options/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7048
+        }
+      ],
+      "UpstreamPathTemplate": "/api/options/{everything}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "Priority": 1
+    }
+
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:7005"
+  }
+}
